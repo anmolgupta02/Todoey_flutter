@@ -1,9 +1,15 @@
+import 'package:To_Do_App/screens/add_task_screen.dart';
 import 'package:To_Do_App/widgets/tasks_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class TasksScreen extends StatelessWidget {
-  String noOfTasks = "12";
+  final String noOfTasks = "12";
+
+  // Widget buildBottomSheet(BuildContext context) => Container(
+  // We can pass this directly to the builder for showModalBottomSheet but for code optimization,
+  // we'll use a different strategy.
+  // );
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +18,10 @@ class TasksScreen extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
           backgroundColor: Colors.lightBlueAccent,
           child: Icon(Icons.add),
-          onPressed: null),
+          onPressed: () {
+            showModalBottomSheet(
+                context: context, builder: (context) => AddTaskScreen());
+          }),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
