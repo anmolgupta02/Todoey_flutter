@@ -1,29 +1,31 @@
 import 'package:flutter/material.dart';
 
-class TaskTile extends StatefulWidget {
-  @override
-  _TaskTileState createState() => _TaskTileState();
-}
+class TaskTile extends StatelessWidget {
+  final bool isChecked;
+  final String taskTitle;
+  final Function checkBoxCallback;
 
-class _TaskTileState extends State<TaskTile> {
-  bool isChecked = false;
-
-  void checkboxCallback(bool checkBoxState) {
-    setState(() {
-      isChecked = checkBoxState;
-    });
-  }
+  TaskTile({this.isChecked, this.taskTitle, this.checkBoxCallback});
+  // void checkboxCallback(bool checkBoxState) {
+  //   setState(() {
+  //     isChecked = checkBoxState;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
       title: Text(
-        "This is a task",
+        taskTitle,
         style: isChecked
             ? TextStyle(decoration: TextDecoration.lineThrough)
             : null,
       ),
-      trailing: TaskCheckbox(isChecked, checkboxCallback),
+      trailing: Checkbox(
+        activeColor: Colors.lightBlueAccent,
+        value: isChecked,
+        onChanged: checkBoxCallback,
+      ),
       /* this can be done using anonmyous functions calls as well.
       First we need to change the TaskCheckBox constructor as named constructor using {}
       Then in the calling, using named arguments do this -
@@ -33,22 +35,6 @@ class _TaskTileState extends State<TaskTile> {
             isChecked = checkBoxState;
            }); )
       */
-    );
-  }
-}
-
-class TaskCheckbox extends StatelessWidget {
-  final bool checkBoxState;
-  final Function checkBoxCallback;
-
-  TaskCheckbox(this.checkBoxState, this.checkBoxCallback);
-
-  @override
-  Widget build(BuildContext context) {
-    return Checkbox(
-      activeColor: Colors.lightBlueAccent,
-      value: checkBoxState,
-      onChanged: checkBoxCallback,
     );
   }
 }
