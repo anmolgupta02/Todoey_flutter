@@ -1,15 +1,22 @@
+import 'package:To_Do_App/models/task.dart';
 import 'package:To_Do_App/screens/add_task_screen.dart';
 import 'package:To_Do_App/widgets/tasks_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class TasksScreen extends StatelessWidget {
+class TasksScreen extends StatefulWidget {
+  @override
+  _TasksScreenState createState() => _TasksScreenState();
+}
+
+class _TasksScreenState extends State<TasksScreen> {
   final String noOfTasks = "12";
 
-  // Widget buildBottomSheet(BuildContext context) => Container(
-  // We can pass this directly to the builder for showModalBottomSheet but for code optimization,
-  // we'll use a different strategy.
-  // );
+  List<Task> tasks = [
+    Task(name: 'Buy Milk'),
+    Task(name: 'Bug Eggs'),
+    Task(name: 'Buy Bread'),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +27,18 @@ class TasksScreen extends StatelessWidget {
           child: Icon(Icons.add),
           onPressed: () {
             showModalBottomSheet(
-                context: context, builder: (context) => AddTaskScreen());
+              context: context,
+              builder: (context) => AddTaskScreen(
+                (newTaskTitle) {
+                  print(newTaskTitle);
+                  setState(() {
+                    tasks.add(Task(name: newTaskTitle));
+                  });
+                  //using this to closing bottomsheet as soon as we click on add.
+                  Navigator.pop(context);
+                },
+              ),
+            );
           }),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -50,7 +68,7 @@ class TasksScreen extends StatelessWidget {
                       color: Colors.white),
                 ),
                 Text(
-                  '$noOfTasks Tasks',
+                  '${tasks.length} tasks',
                   style: TextStyle(color: Colors.white, fontSize: 15),
                 ),
               ],
@@ -66,7 +84,9 @@ class TasksScreen extends StatelessWidget {
                     topLeft: Radius.circular(20),
                   ),
                 ),
-                child: TasksList()),
+                child: TasksList(
+                  tasks: tasks,
+                )),
           )
         ],
       ),
